@@ -9,7 +9,8 @@
 fn main() {
     let data = "Rust is great!".to_string();
 
-    get_char(data.clone());
+    let last_char = get_char(data.clone());
+    println!("last_char: {}", last_char);
 
     string_uppercase(data);
 }

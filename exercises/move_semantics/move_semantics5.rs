@@ -10,8 +10,14 @@
 fn main() {
     let mut x = 100;
     let y = &mut x;
+    println!("{}", y);
+
     *y += 100;
+    println!("{}", y);
+
     let z = &mut x;
+    println!("{}", z);
+
     *z += 1000;
     assert_eq!(x, 1200);
 }

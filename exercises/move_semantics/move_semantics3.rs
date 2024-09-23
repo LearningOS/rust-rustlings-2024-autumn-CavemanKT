@@ -20,9 +20,7 @@ fn main() {
 }
 
 fn fill_vec(mut vec: Vec<i32>) -> Vec<i32> {
-    vec.push(22);
-    vec.push(44);
-    vec.push(66);
+    vec.extend_from_slice(&[22, 44, 66]);
 
     vec
 }
