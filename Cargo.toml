@@ -20,6 +20,7 @@ serde_json = "1.0.81"
 home = "0.5.3"
 glob = "0.3.0"
 tokio = { version = "1.21.2", features = ["full"] }
+cool_asserts = "2.0.3"
 
 [[bin]]
 name = "rustlings"
