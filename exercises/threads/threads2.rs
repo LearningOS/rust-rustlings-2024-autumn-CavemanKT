@@ -32,6 +32,7 @@ fn main() {
     }
 
     for handle in handles {
+        println!("handles: jobs completed {}", status.lock().unwrap().jobs_completed);
         handle.join().unwrap();
     }
 
