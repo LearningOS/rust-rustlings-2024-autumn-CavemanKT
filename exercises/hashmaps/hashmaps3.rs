@@ -18,7 +18,6 @@
 
 use std::collections::HashMap;
 
-// A structure to store the goal details of a team.
 #[derive(Debug)]
 struct Team {
     goals_scored: u8,
@@ -26,7 +25,6 @@ struct Team {
 }
 
 fn build_scores_table(results: String) -> HashMap<String, Team> {
-    // The name of the team is the key and its associated struct is the value.
     let mut scores: HashMap<String, Team> = HashMap::new();
 
     for r in results.lines() {
@@ -35,25 +33,31 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
         let team_1_score: u8 = v[2].parse().unwrap();
         let team_2_name = v[1].to_string();
         let team_2_score: u8 = v[3].parse().unwrap();
-        // TODO: Populate the scores table with details extracted from the
-        // current line. Keep in mind that goals scored by team_1
-        // will be the number of goals conceded from team_2, and similarly
-        // goals scored by team_2 will be the number of goals conceded by
-        // team_1.
-        let team_1 = Team {
-            goals_scored: team_1_score,
-            goals_conceded: team_2_score,
-        };
-        let team_2 = Team {
-            goals_scored: team_2_score,
-            goals_conceded: team_1_score,
-        };
-        scores.entry(team_1_name.clone()).or_insert_with(|| team_1); // or_insert(team_1_name, team_1);
-        scores.entry(team_2_name.clone()).or_insert_with(|| team_2); // or_insert(team_2_name, team_2);
+
+        scores.entry(team_1_name)
+            .and_modify(|t| {
+                t.goals_scored += team_1_score;
+                t.goals_conceded += team_2_score;
+            })
+            .or_insert_with(|| Team {
+                goals_scored: team_1_score,
+                goals_conceded: team_2_score,
+            });
+
+        scores.entry(team_2_name)
+            .and_modify(|t| {
+                t.goals_scored += team_2_score;
+                t.goals_conceded += team_1_score;
+            })
+            .or_insert_with(|| Team {
+                goals_scored: team_2_score,
+                goals_conceded: team_1_score,
+            });
     }
-    println!("{:?}", scores);
+
     scores
 }
+
 
 #[cfg(test)]
 mod tests {
@@ -61,7 +65,7 @@ mod tests {
 
     fn get_results() -> String {
         let results = "".to_string()
-            + "England,France,5,4\n"
+            + "England,France,4,2\n"
             + "France,Italy,3,1\n"
             + "Poland,Spain,2,0\n"
             + "Germany,England,2,1\n";
